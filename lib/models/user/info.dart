@@ -154,7 +154,7 @@ class LevelInfo {
     currentMin = json['current_min'];
     currentExp = json['current_exp'];
     nextExp = json['current_level'] == 6
-        ? json['current_exp']
+        ? 28800
         : json['next_exp'];
   }
 

@@ -354,7 +354,12 @@ class _MediaPageState extends CommonPageState<MinePage, MineController>
                         child: LinearProgressIndicator(
                           minHeight: 2.25,
                           value: hasLevel
-                              ? levelInfo.currentExp! / levelInfo.nextExp!
+                              ? (() {
+                                  final ratio =
+                                      levelInfo.currentExp! /
+                                      levelInfo.nextExp!;
+                                  return ratio > 1 ? 1.0 : ratio;
+                                }())
                               : 0,
                           trackGap: hasLevel ? null : 0,
                           backgroundColor: theme.colorScheme.outline.withValues(
