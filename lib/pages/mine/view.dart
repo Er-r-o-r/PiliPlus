@@ -361,7 +361,6 @@ class _MediaPageState extends CommonPageState<MinePage, MineController>
                                   return ratio > 1 ? 1.0 : ratio;
                                 }())
                               : 0,
-                          trackGap: hasLevel ? null : 0,
                           backgroundColor: theme.colorScheme.outline.withValues(
                             alpha: 0.4,
                           ),
