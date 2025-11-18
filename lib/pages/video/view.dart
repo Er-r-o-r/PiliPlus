@@ -1877,6 +1877,46 @@ class _VideoDetailPageVState extends State<VideoDetailPageV>
                         ),
                       ),
                       const Spacer(),
+                      Obx(() {
+                        final totalCount = videoDetailController.args['count'] ?? 0;
+                        if (totalCount <= 0 || videoDetailController.mediaList.isEmpty) {
+                          return const SizedBox.shrink();
+                        }
+
+                        String positionText = '-/-';
+                        try {
+                          final currentCid = videoDetailController.cid.value;
+                          // 使用 firstWhereOrNull 安全查找 (返回可空类型)
+                          final currentItem = videoDetailController.mediaList.firstWhereOrNull(
+                                (item) => item.cid == currentCid,
+                          );
+
+                          if (currentItem != null) {
+                            // 使用 index (局部位置+偏移估算)
+                            if (currentItem.index != null && currentItem.index! >= 0) {
+                              // 获取列表首项的 offset 作为基准 (安全处理空值)
+                              final baseOffset = videoDetailController.mediaList.first.offset ?? 0;
+                              final estimatedPosition = baseOffset + currentItem.index!;
+                              positionText = '${estimatedPosition + 1}/$totalCount';
+                            }
+                          }
+                        } catch (_) {
+                        }
+
+                        // 仅当有有效位置时显示
+                        if (positionText == '-/-') {
+                          return const SizedBox.shrink();
+                        }
+
+                        return Text(
+                          ' $positionText ',
+                          style: TextStyle(
+                            color: themeData.colorScheme.onSecondaryContainer.withValues(alpha: 0.7),
+                            fontSize: 12,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        );
+                      }),
                       const Icon(Icons.keyboard_arrow_up_rounded, size: 26),
                     ],
                   ),

@@ -335,7 +335,7 @@ class _UgcIntroPanelState extends State<UgcIntroPanel> {
     GestureDetector(
       onTap: () => Utils.copyText('AV${videoDetail.aid}'),
       child: Text(
-        'AV${videoDetail.aid}',
+        'av${videoDetail.aid}',
         style: TextStyle(
           fontSize: 14,
           color: theme.colorScheme.secondary,
