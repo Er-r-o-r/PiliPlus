@@ -444,7 +444,7 @@ List<SettingsModel> get extraSettings => [
   const SettingsModel(
     settingsType: SettingsType.sw1tch,
     title: '显示继续播放分P提示',
-    leading: Icon(Icons.local_parking),
+    leading: Icon(Icons.video_collection),
     setKey: SettingBoxKey.continuePlayingPart,
     defaultVal: true,
   ),
