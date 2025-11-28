@@ -498,7 +498,9 @@ class ChatItem extends StatelessWidget {
                       );
                       final List<InlineSpan> children = [];
                       late final Map<String, Map> emojiMap = {};
-                      final List<String> patterns = [Constants.urlRegex.pattern];
+                      final List<String> patterns = [
+                        Constants.urlRegex.pattern,
+                      ];
 
                       if (eInfos != null) {
                         for (var e in eInfos!) {
@@ -531,15 +533,20 @@ class ChatItem extends StatelessWidget {
                                 ),
                               );
                             } else {
-                              children.add(TextSpan(text: matchStr, style: style));
+                              children.add(
+                                TextSpan(text: matchStr, style: style),
+                              );
                             }
                           } else {
                             children.add(
                               TextSpan(
                                 text: matchStr,
-                                style: style.copyWith(color: theme.colorScheme.primary),
+                                style: style.copyWith(
+                                  color: theme.colorScheme.primary,
+                                ),
                                 recognizer: TapGestureRecognizer()
-                                  ..onTap = () => PiliScheme.routePushFromUrl(matchStr),
+                                  ..onTap = () =>
+                                      PiliScheme.routePushFromUrl(matchStr),
                               ),
                             );
                           }
