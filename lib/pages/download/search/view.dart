@@ -1,4 +1,5 @@
 import 'package:PiliPlus/common/widgets/loading_widget/http_error.dart';
+import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/models_new/download/bili_download_entry_info.dart';
 import 'package:PiliPlus/pages/common/search/common_search_page.dart';
 import 'package:PiliPlus/pages/download/detail/widgets/item.dart';
@@ -7,6 +8,7 @@ import 'package:PiliPlus/services/download/download_service.dart';
 import 'package:PiliPlus/utils/grid.dart';
 import 'package:flutter/material.dart'
     hide SliverGridDelegateWithMaxCrossAxisExtent;
+import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
 
 class DownloadSearchPage extends StatefulWidget {
@@ -37,6 +39,9 @@ class _DownloadSearchPageState
     IconButton(
       tooltip: '多选',
       onPressed: () {
+        if (controller.loadingState.value is! Success) {
+          return;
+        }
         if (controller.enableMultiSelect.value) {
           controller.handleSelect();
         } else {
@@ -44,6 +49,34 @@ class _DownloadSearchPageState
         }
       },
       icon: const Icon(Icons.edit_note),
+    ),
+  ];
+
+  @override
+  List<Widget>? get multiSelectActions => [
+    TextButton(
+      style: TextButton.styleFrom(visualDensity: VisualDensity.compact),
+      onPressed: () async {
+        final allChecked = controller.allChecked.toSet();
+        controller.handleSelect();
+        final res = await Future.wait(
+          allChecked.map(
+            (e) => _downloadService.downloadDanmaku(
+              entry: e,
+              isUpdate: true,
+            ),
+          ),
+        );
+        if (res.every((e) => e)) {
+          SmartDialog.showToast('更新成功');
+        } else {
+          SmartDialog.showToast('更新失败');
+        }
+      },
+      child: Text(
+        '更新',
+        style: TextStyle(color: Get.theme.colorScheme.onSurface),
+      ),
     ),
   ];
 
