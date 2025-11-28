@@ -470,6 +470,117 @@ class ChatItem extends StatelessWidget {
                       ),
                     ),
                   ),
+                  Builder(
+                    builder: (context) {
+                      String? upMessage = null;
+                      try {
+                        if (content is Map<String, dynamic> &&
+                            content.containsKey('attach_msg') &&
+                            content['attach_msg'] is Map<String, dynamic> &&
+                            content['attach_msg'].containsKey('content')) {
+                          final attachMsg = content['attach_msg'];
+                          if (attachMsg is Map<String, dynamic>) {
+                            upMessage = attachMsg['content'] as String?;
+                          }
+                        }
+                      } catch (e) {
+                        upMessage = null;
+                      }
+                      if (upMessage == null || upMessage.isEmpty) {
+                        return const SizedBox.shrink();
+                      }
+
+                      final style = TextStyle(
+                        fontSize: 12,
+                        color: theme.colorScheme.onSurface,
+                        height: 1.5,
+                        letterSpacing: 0.6,
+                      );
+                      final List<InlineSpan> children = [];
+                      late final Map<String, Map> emojiMap = {};
+                      final List<String> patterns = [Constants.urlRegex.pattern];
+
+                      if (eInfos != null) {
+                        for (var e in eInfos!) {
+                          emojiMap[e.text] ??= {
+                            'url': e.hasGifUrl() ? e.gifUrl : e.url,
+                            'size': e.size * 22.0,
+                          };
+                        }
+                        patterns.addAll(emojiMap.keys.map(RegExp.escape));
+                      }
+
+                      final regex = RegExp(patterns.join('|'));
+
+                      upMessage.splitMapJoin(
+                        regex,
+                        onMatch: (Match match) {
+                          final matchStr = match[0]!;
+                          if (matchStr.startsWith('[')) {
+                            final emoji = emojiMap[matchStr];
+                            if (emoji != null) {
+                              final size = emoji['size'];
+                              children.add(
+                                WidgetSpan(
+                                  child: NetworkImgLayer(
+                                    width: size,
+                                    height: size,
+                                    src: emoji['url'],
+                                    type: ImageType.emote,
+                                  ),
+                                ),
+                              );
+                            } else {
+                              children.add(TextSpan(text: matchStr, style: style));
+                            }
+                          } else {
+                            children.add(
+                              TextSpan(
+                                text: matchStr,
+                                style: style.copyWith(color: theme.colorScheme.primary),
+                                recognizer: TapGestureRecognizer()
+                                  ..onTap = () => PiliScheme.routePushFromUrl(matchStr),
+                              ),
+                            );
+                          }
+                          return '';
+                        },
+                        onNonMatch: (String text) {
+                          children.add(TextSpan(text: text, style: style));
+                          return '';
+                        },
+                      );
+
+                      return Padding(
+                        padding: const EdgeInsets.only(
+                          left: 12,
+                          right: 12,
+                          bottom: 8,
+                        ),
+                        child: Container(
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                            color: theme.colorScheme.surface.withValues(
+                              alpha: 0.5,
+                            ),
+                            borderRadius: StyleString.mdRadius,
+                          ),
+                          padding: const EdgeInsets.symmetric(
+                            vertical: 8,
+                            horizontal: 10,
+                          ),
+                          child: Text.rich(
+                            TextSpan(
+                              style: style,
+                              children: children,
+                            ),
+                            softWrap: true,
+                            textAlign: TextAlign.left,
+                          ),
+                        ),
+                      );
+                    },
+                  ),
                 ],
               ),
             );
