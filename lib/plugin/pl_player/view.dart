@@ -2186,7 +2186,7 @@ class _PLVideoPlayerState extends State<PLVideoPlayer>
                 ),
                 PopupMenuText(
                   title: '选择画质',
-                  initialValue: qa.code,
+                  value: () => qa.code,
                   onSelected: (value) {
                     final video = videoDetailController.findVideoByQa(value);
                     url = video.baseUrl;
@@ -2206,7 +2206,7 @@ class _PLVideoPlayerState extends State<PLVideoPlayer>
                 ),
                 PopupMenuText(
                   title: 'webp预设',
-                  initialValue: preset,
+                  value: () => preset,
                   onSelected: (value) {
                     preset = value;
                     return false;
