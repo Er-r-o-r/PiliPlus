@@ -357,10 +357,10 @@ class _UgcIntroPanelState extends State<UgcIntroPanel> {
     ],
     Obx(() {
       final videoTags = introController.videoTags.value;
-      if (videoTags.isNullOrEmpty) {
+      if (videoTags == null || videoTags.isEmpty) {
         return const SizedBox.shrink();
       }
-      return _buildTags(videoTags!);
+      return _buildTags(videoTags);
     }),
   ];
 
@@ -840,7 +840,7 @@ class _UgcIntroPanelState extends State<UgcIntroPanel> {
                               context: context,
                               mid: item.mid,
                               isFollow: false,
-                              callback: (val) {
+                              afterMod: (val) {
                                 introController.staffRelations['${item.mid}'] =
                                     true;
                               },
