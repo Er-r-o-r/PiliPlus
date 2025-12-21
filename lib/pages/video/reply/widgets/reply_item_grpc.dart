@@ -376,24 +376,26 @@ class ReplyItemGrpc extends StatelessWidget {
         ),
         const SizedBox(width: 2),
         if (replyItem.replyControl.cardLabels.isNotEmpty) ...[
-          ...replyItem.replyControl.cardLabels.map((label) => Padding(
-            padding: const EdgeInsets.only(right: 4.0),
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-              decoration: BoxDecoration(
-                color: theme.colorScheme.outline.withValues(alpha: 0.1),
-                borderRadius: BorderRadius.circular(4),
-              ),
-              child: Text(
-                label.textContent,
-                style: TextStyle(
-                  fontSize: theme.textTheme.labelSmall?.fontSize ?? 12,
-                  color: theme.colorScheme.outline.withValues(alpha: 0.8),
-                  fontWeight: FontWeight.normal,
+          ...replyItem.replyControl.cardLabels.map(
+            (label) => Padding(
+              padding: const EdgeInsets.only(right: 4.0),
+              child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                decoration: BoxDecoration(
+                  color: theme.colorScheme.outline.withValues(alpha: 0.1),
+                  borderRadius: BorderRadius.circular(4),
+                ),
+                child: Text(
+                  label.textContent,
+                  style: TextStyle(
+                    fontSize: theme.textTheme.labelSmall?.fontSize ?? 12,
+                    color: theme.colorScheme.outline.withValues(alpha: 0.8),
+                    fontWeight: FontWeight.normal,
+                  ),
                 ),
               ),
             ),
-          )),
+          ),
           const SizedBox(width: 2),
         ],
         if (replyLevel == 2 && needDivider && replyItem.id != replyItem.dialog)
