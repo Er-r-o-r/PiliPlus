@@ -1,11 +1,12 @@
 import 'package:PiliPlus/common/widgets/flutter/text_field/controller.dart';
 import 'package:PiliPlus/grpc/bilibili/main/community/reply/v1.pb.dart'
-    show MainListReply, ReplyInfo, SubjectControl, Mode, EditorIconState;
+    show MainListReply, ReplyInfo, SubjectControl, Mode;
 import 'package:PiliPlus/grpc/bilibili/pagination.pb.dart';
 import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/http/reply.dart';
 import 'package:PiliPlus/models/common/reply/reply_sort_type.dart';
 import 'package:PiliPlus/pages/common/common_list_controller.dart';
+import 'package:PiliPlus/pages/common/publish/publish_route.dart';
 import 'package:PiliPlus/pages/video/reply_new/view.dart';
 import 'package:PiliPlus/utils/feed_back.dart';
 import 'package:PiliPlus/utils/reply_utils.dart';
@@ -16,7 +17,6 @@ import 'package:fixnum/fixnum.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
-import 'package:get/get_navigation/src/dialog/dialog_route.dart';
 
 abstract class ReplyController<R> extends CommonListController<R, ReplyInfo> {
   final RxInt count = (-1).obs;
@@ -102,20 +102,23 @@ abstract class ReplyController<R> extends CommonListController<R, ReplyInfo> {
   }
 
   (bool inputDisable, bool canUploadPic, String? hint) get replyHint {
-    bool inputDisable = false;
-    bool canUploadPic =
-        subjectControl?.uploadPictureIconState !=
-        EditorIconState.EditorIconState_DISABLE;
     String? hint;
+    bool canUploadPic = true;
+    bool inputDisable = false;
     try {
-      if (subjectControl != null && subjectControl!.hasRootText()) {
-        final rootText = subjectControl!.rootText;
-        inputDisable = subjectControl!.inputDisable;
-        if (inputDisable) {
-          SmartDialog.showToast(rootText);
-        }
-        if (rootText.contains('可发') || rootText.contains('可见')) {
-          hint = rootText;
+      if (subjectControl case final subjectControl?) {
+        inputDisable = subjectControl.inputDisable;
+        canUploadPic =
+            subjectControl.uploadPictureIconState == .EditorIconState_DEFAULT ||
+            subjectControl.uploadPictureIconState == .EditorIconState_ENABLE;
+        if (subjectControl.hasRootText()) {
+          final rootText = subjectControl.rootText;
+          if (inputDisable) {
+            SmartDialog.showToast(rootText);
+          }
+          if (rootText.contains('可发') || rootText.contains('可见')) {
+            hint = rootText;
+          }
         }
       }
     } catch (_) {}
@@ -146,7 +149,7 @@ abstract class ReplyController<R> extends CommonListController<R, ReplyInfo> {
     final key = oid ?? replyItem!.oid + replyItem.id;
     Navigator.of(context)
         .push(
-          GetDialogRoute(
+          PublishRoute(
             pageBuilder: (buildContext, animation, secondaryAnimation) {
               return ReplyPage(
                 hint: hint,
@@ -164,18 +167,6 @@ abstract class ReplyController<R> extends CommonListController<R, ReplyInfo> {
                     savedReplies[key] = reply.toList();
                   }
                 },
-              );
-            },
-            transitionDuration: const Duration(milliseconds: 500),
-            transitionBuilder: (context, animation, secondaryAnimation, child) {
-              return SlideTransition(
-                position: animation.drive(
-                  Tween(
-                    begin: const Offset(0.0, 1.0),
-                    end: Offset.zero,
-                  ).chain(CurveTween(curve: Curves.linear)),
-                ),
-                child: child,
               );
             },
             settings: RouteSettings(

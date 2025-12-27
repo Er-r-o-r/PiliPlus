@@ -13,6 +13,7 @@ import 'package:PiliPlus/pages/video/introduction/ugc/widgets/action_item.dart';
 import 'package:PiliPlus/plugin/pl_player/models/play_repeat.dart';
 import 'package:PiliPlus/utils/date_utils.dart';
 import 'package:PiliPlus/utils/duration_utils.dart';
+import 'package:PiliPlus/utils/extension/context_ext.dart';
 import 'package:PiliPlus/utils/extension/num_ext.dart';
 import 'package:PiliPlus/utils/extension/size_ext.dart';
 import 'package:PiliPlus/utils/extension/string_ext.dart';
@@ -312,9 +313,7 @@ class _AudioPageState extends State<AudioPage> {
                                               children: [
                                                 if (isCurr) ...[
                                                   WidgetSpan(
-                                                    alignment:
-                                                        PlaceholderAlignment
-                                                            .bottom,
+                                                    alignment: .bottom,
                                                     child: Image.asset(
                                                       'assets/images/live.gif',
                                                       width: 16,
@@ -356,8 +355,7 @@ class _AudioPageState extends State<AudioPage> {
                                         children: [
                                           if (isCurr) ...[
                                             WidgetSpan(
-                                              alignment:
-                                                  PlaceholderAlignment.bottom,
+                                              alignment: .bottom,
                                               child: Image.asset(
                                                 'assets/images/live.gif',
                                                 width: 16,

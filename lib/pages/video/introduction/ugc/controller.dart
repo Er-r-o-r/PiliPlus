@@ -28,6 +28,7 @@ import 'package:PiliPlus/pages/video/reply/controller.dart';
 import 'package:PiliPlus/plugin/pl_player/models/play_repeat.dart';
 import 'package:PiliPlus/services/service_locator.dart';
 import 'package:PiliPlus/utils/accounts.dart';
+import 'package:PiliPlus/utils/extension/context_ext.dart';
 import 'package:PiliPlus/utils/extension/iterable_ext.dart';
 import 'package:PiliPlus/utils/extension/string_ext.dart';
 import 'package:PiliPlus/utils/feed_back.dart';
@@ -163,12 +164,12 @@ class UgcIntroController extends CommonIntroController with ReloadMixin {
   Future<void> queryAllStatus() async {
     var result = await VideoHttp.videoRelation(bvid: bvid);
     if (result case Success(:var response)) {
-      late final stat = videoDetail.value.stat!;
+      late final stat = videoDetail.value.stat;
       if (response.like!) {
-        stat.like = max(1, stat.like);
+        stat?.like = max(1, stat.like);
       }
       if (response.favorite!) {
-        stat.favorite = max(1, stat.favorite);
+        stat?.favorite = max(1, stat.favorite);
       }
       hasLike.value = response.like!;
       hasDislike.value = response.dislike!;
@@ -192,18 +193,18 @@ class UgcIntroController extends CommonIntroController with ReloadMixin {
     }
     var result = await VideoHttp.ugcTriple(bvid: bvid);
     if (result case Success(:final response)) {
-      late final stat = videoDetail.value.stat!;
+      late final stat = videoDetail.value.stat;
       if (response.like == true && !hasLike.value) {
-        stat.like++;
+        stat?.like++;
         hasLike.value = true;
       }
       if (response.coin == true && !hasCoin) {
-        stat.coin += 2;
+        stat?.coin += 2;
         coinNum.value = 2;
         GlobalData().afterCoin(2);
       }
       if (response.fav == true && !hasFav.value) {
-        stat.favorite++;
+        stat?.favorite++;
         hasFav.value = true;
       }
       hasDislike.value = false;
@@ -231,7 +232,7 @@ class UgcIntroController extends CommonIntroController with ReloadMixin {
     var result = await VideoHttp.likeVideo(bvid: bvid, type: newVal);
     if (result case Success(:final response)) {
       SmartDialog.showToast(newVal ? response : '取消赞');
-      videoDetail.value.stat!.like += newVal ? 1 : -1;
+      videoDetail.value.stat?.like += newVal ? 1 : -1;
       hasLike.value = newVal;
       if (newVal) {
         hasDislike.value = false;
@@ -255,7 +256,7 @@ class UgcIntroController extends CommonIntroController with ReloadMixin {
         SmartDialog.showToast('点踩成功');
         hasDislike.value = true;
         if (hasLike.value) {
-          videoDetail.value.stat!.like--;
+          videoDetail.value.stat?.like--;
           hasLike.value = false;
         }
       } else {
@@ -518,9 +519,11 @@ class UgcIntroController extends CommonIntroController with ReloadMixin {
         // 重新请求评论
         if (videoDetailCtr.showReply) {
           try {
-            Get.find<VideoReplyController>(tag: heroTag)
-              ..aid = aid
-              ..onReload();
+            final replyCtr = Get.find<VideoReplyController>(tag: heroTag)
+              ..aid = aid;
+            if (replyCtr.loadingState.value is! Loading) {
+              replyCtr.onReload();
+            }
           } catch (_) {}
         }
 
