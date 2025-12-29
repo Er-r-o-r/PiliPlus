@@ -1884,18 +1884,15 @@ class _VideoDetailPageVState extends State<VideoDetailPageV>
 
                         String positionText = '-/-';
                         try {
-                          final currentCid = videoDetailController.cid.value;
-                          // 使用 firstWhereOrNull 安全查找 (返回可空类型)
+                          final currentBvid = videoDetailController.bvid;
                           final currentItem = videoDetailController.mediaList
                               .firstWhereOrNull(
-                                (item) => item.cid == currentCid,
+                                (item) => item.bvid == currentBvid,
                               );
 
                           if (currentItem != null) {
-                            // 使用 index (局部位置+偏移估算)
                             if (currentItem.index != null &&
                                 currentItem.index! >= 0) {
-                              // 获取列表首项的 offset 作为基准 (安全处理空值)
                               final baseOffset =
                                   videoDetailController
                                       .mediaList
@@ -1909,11 +1906,6 @@ class _VideoDetailPageVState extends State<VideoDetailPageV>
                             }
                           }
                         } catch (_) {}
-
-                        // 仅当有有效位置时显示
-                        if (positionText == '-/-') {
-                          return const SizedBox.shrink();
-                        }
 
                         return Text(
                           ' $positionText ',
