@@ -14,6 +14,7 @@ import 'package:PiliPlus/grpc/bilibili/app/listener/v1.pb.dart'
         DashItem,
         ResponseUrl;
 import 'package:PiliPlus/http/constants.dart';
+import 'package:PiliPlus/http/init.dart';
 import 'package:PiliPlus/http/ua_type.dart';
 import 'package:PiliPlus/pages/common/common_intro_controller.dart'
     show FavMixin;
@@ -390,7 +391,7 @@ class AudioController extends GetxController
     }
   }
 
-  void actionCoinVideo() {
+  Future<void> actionCoinVideo() async {
     final audioItem = this.audioItem.value;
     if (audioItem == null) {
       return;
@@ -407,6 +408,7 @@ class AudioController extends GetxController
       return;
     }
 
+    await Request.setCoin();
     if (GlobalData().coins != null && GlobalData().coins! < 1) {
       SmartDialog.showToast('硬币不足');
       // return;

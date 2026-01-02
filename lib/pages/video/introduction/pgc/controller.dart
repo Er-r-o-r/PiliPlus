@@ -3,6 +3,7 @@ import 'dart:math' show max;
 
 import 'package:PiliPlus/http/constants.dart';
 import 'package:PiliPlus/http/fav.dart';
+import 'package:PiliPlus/http/init.dart';
 import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/http/pgc.dart';
 import 'package:PiliPlus/http/search.dart';
@@ -114,7 +115,7 @@ class PgcIntroController extends CommonIntroController {
 
   // 投币
   @override
-  void actionCoinVideo() {
+  Future<void> actionCoinVideo() async{
     if (!isLogin) {
       SmartDialog.showToast('账号未登录');
       return;
@@ -125,6 +126,7 @@ class PgcIntroController extends CommonIntroController {
       return;
     }
 
+    await Request.setCoin();
     if (GlobalData().coins != null && GlobalData().coins! < 1) {
       SmartDialog.showToast('硬币不足');
       // return;
@@ -419,6 +421,7 @@ class PgcIntroController extends CommonIntroController {
       SmartDialog.showToast('账号未登录');
       return;
     }
+    Request.setCoin();
     if (hasLike.value && hasCoin && hasFav.value) {
       // 已点赞、投币、收藏
       SmartDialog.showToast('已三连');
