@@ -116,7 +116,7 @@ class PgcIntroController extends CommonIntroController {
 
   // 投币
   @override
-  Future<void> actionCoinVideo() async{
+  Future<void> actionCoinVideo() async {
     if (!isLogin) {
       SmartDialog.showToast('账号未登录');
       return;

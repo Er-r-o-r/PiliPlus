@@ -1890,9 +1890,10 @@ class _VideoDetailPageVState extends State<VideoDetailPageV>
                           final currentBvid = videoDetailController.bvid;
                           MediaListItemModel? currentItem;
                           try {
-                            currentItem = videoDetailController.mediaList.firstWhere(
+                            currentItem = videoDetailController.mediaList
+                                .firstWhere(
                                   (item) => item.bvid == currentBvid,
-                            );
+                                );
                           } catch (e) {
                             currentItem = null;
                           }
@@ -1905,11 +1906,11 @@ class _VideoDetailPageVState extends State<VideoDetailPageV>
                                       .mediaList
                                       .first
                                       .offset ??
-                                      0;
+                                  0;
                               final estimatedPosition =
                                   baseOffset + currentItem.index!;
                               positionText =
-                              '${estimatedPosition + 1}/$totalCount';
+                                  '${estimatedPosition + 1}/$totalCount';
                             }
                           }
                         } catch (_) {}
