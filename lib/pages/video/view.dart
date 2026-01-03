@@ -12,6 +12,7 @@ import 'package:PiliPlus/common/widgets/scroll_physics.dart';
 import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/main.dart';
 import 'package:PiliPlus/models/common/episode_panel_type.dart';
+import 'package:PiliPlus/models_new/media_list/media_list.dart';
 import 'package:PiliPlus/models_new/pgc/pgc_info_model/result.dart';
 import 'package:PiliPlus/models_new/video/video_detail/episode.dart' as ugc;
 import 'package:PiliPlus/models_new/video/video_detail/page.dart';
@@ -1887,10 +1888,14 @@ class _VideoDetailPageVState extends State<VideoDetailPageV>
                         String positionText = '-/-';
                         try {
                           final currentBvid = videoDetailController.bvid;
-                          final currentItem = videoDetailController.mediaList
-                              .firstWhereOrNull(
-                                (item) => item.bvid == currentBvid,
-                              );
+                          MediaListItemModel? currentItem;
+                          try {
+                            currentItem = videoDetailController.mediaList.firstWhere(
+                                  (item) => item.bvid == currentBvid,
+                            );
+                          } catch (e) {
+                            currentItem = null;
+                          }
 
                           if (currentItem != null) {
                             if (currentItem.index != null &&
@@ -1900,11 +1905,11 @@ class _VideoDetailPageVState extends State<VideoDetailPageV>
                                       .mediaList
                                       .first
                                       .offset ??
-                                  0;
+                                      0;
                               final estimatedPosition =
                                   baseOffset + currentItem.index!;
                               positionText =
-                                  '${estimatedPosition + 1}/$totalCount';
+                              '${estimatedPosition + 1}/$totalCount';
                             }
                           }
                         } catch (_) {}
