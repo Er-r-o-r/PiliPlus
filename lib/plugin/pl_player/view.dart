@@ -47,6 +47,7 @@ import 'package:PiliPlus/plugin/pl_player/widgets/forward_seek.dart';
 import 'package:PiliPlus/plugin/pl_player/widgets/mpv_convert_webp.dart';
 import 'package:PiliPlus/plugin/pl_player/widgets/play_pause_btn.dart';
 import 'package:PiliPlus/utils/duration_utils.dart';
+import 'package:PiliPlus/utils/extension/num_ext.dart';
 import 'package:PiliPlus/utils/extension/theme_ext.dart';
 import 'package:PiliPlus/utils/id_utils.dart';
 import 'package:PiliPlus/utils/image_utils.dart';
@@ -67,7 +68,7 @@ import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:flutter_volume_controller/flutter_volume_controller.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:get/get.dart' hide ContextExtensionss;
+import 'package:get/get.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:media_kit_video/media_kit_video.dart';
 import 'package:screen_brightness_platform_interface/screen_brightness_platform_interface.dart';
@@ -177,6 +178,7 @@ class _PLVideoPlayerState extends State<PLVideoPlayer>
         animationController.reverse();
       }
     });
+    transformationController = TransformationController();
     animationController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 100),
@@ -538,8 +540,8 @@ class _PLVideoPlayerState extends State<PLVideoPlayer>
             final List<SectionItem> sections = videoDetail.ugcSeason!.sections!;
             for (int i = 0; i < sections.length; i++) {
               final List<EpisodeItem> episodesList = sections[i].episodes!;
-              for (int j = 0; j < episodesList.length; j++) {
-                if (episodesList[j].cid == plPlayerController.cid) {
+              for (final item in episodesList) {
+                if (item.cid == currentCid) {
                   index = i;
                   episodes = episodesList;
                   break;
@@ -914,7 +916,7 @@ class _PLVideoPlayerState extends State<PLVideoPlayer>
 
   bool get isFullScreen => plPlayerController.isFullScreen.value;
 
-  late final transformationController = TransformationController();
+  late final TransformationController transformationController;
 
   late ColorScheme colorScheme;
   late double maxWidth;
@@ -1199,17 +1201,21 @@ class _PLVideoPlayerState extends State<PLVideoPlayer>
     final ctr = plPlayerController.danmakuController;
     if (ctr != null) {
       final pos = details.localPosition;
-      final item = ctr.findSingleDanmaku(pos);
-      if (item == null) {
+      final res = ctr.findSingleDanmaku(pos);
+      if (res != null) {
+        final (dy, item) = res;
+        if (item != _suspendedDm) {
+          _suspendedDm?.suspend = false;
+          if (item.content.extra == null) {
+            _dmOffset.value = null;
+            return;
+          }
+          _suspendedDm = item..suspend = true;
+          this.dy = dy;
+        }
+      } else {
         _suspendedDm?.suspend = false;
         _dmOffset.value = null;
-      } else if (item != _suspendedDm) {
-        _suspendedDm?.suspend = false;
-        if (item.content.extra == null) {
-          _dmOffset.value = null;
-          return;
-        }
-        _suspendedDm = item..suspend = true;
       }
     }
   }
@@ -1968,6 +1974,7 @@ class _PLVideoPlayerState extends State<PLVideoPlayer>
                       Image.asset(
                         'assets/images/loading.webp',
                         height: 25,
+                        cacheHeight: 25.cacheSize(context),
                         semanticLabel: "加载中",
                         color: Colors.white,
                       ),
@@ -2119,7 +2126,6 @@ class _PLVideoPlayerState extends State<PLVideoPlayer>
                 return Transform.flip(
                   flipX: plPlayerController.flipX.value,
                   flipY: plPlayerController.flipY.value,
-                  filterQuality: FilterQuality.low,
                   child: FittedBox(
                     fit: videoFit.boxFit,
                     alignment: widget.alignment,
@@ -2167,8 +2173,9 @@ class _PLVideoPlayerState extends State<PLVideoPlayer>
     WebpPreset preset = WebpPreset.def;
 
     final success =
-        await Get.dialog<bool>(
-          AlertDialog(
+        await showDialog<bool>(
+          context: Get.context!,
+          builder: (context) => AlertDialog(
             title: const Text('动态截图'),
             content: Column(
               spacing: 12,
@@ -2285,6 +2292,7 @@ class _PLVideoPlayerState extends State<PLVideoPlayer>
   static const _actionItemHeight = 35.0 - _triangleHeight;
 
   DanmakuItem<DanmakuExtra>? _suspendedDm;
+  late double dy = 0;
   late final Rxn<Offset> _dmOffset = Rxn<Offset>();
 
   void _removeDmAction() {
@@ -2343,9 +2351,6 @@ class _PLVideoPlayerState extends State<PLVideoPlayer>
 
     final overlayWidth = _actionItemWidth * (seekOffset == null ? 3 : 4);
 
-    final dy = item.content.type == DanmakuItemType.bottom
-        ? maxHeight - item.yPosition - item.height
-        : item.yPosition;
     final top = dy + item.height + _triangleHeight + 2;
 
     final realLeft = dx + overlayWidth / 2;
@@ -2488,7 +2493,6 @@ class _PLVideoPlayerState extends State<PLVideoPlayer>
                         .roomId,
                     msg: item.content.text,
                     extra: extra,
-                    ctr: plPlayerController,
                   ),
                 ),
               ],

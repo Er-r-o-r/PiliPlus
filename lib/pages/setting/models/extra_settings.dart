@@ -8,6 +8,7 @@ import 'package:PiliPlus/common/widgets/image/custom_grid_view.dart'
 import 'package:PiliPlus/common/widgets/pendant_avatar.dart';
 import 'package:PiliPlus/grpc/reply.dart';
 import 'package:PiliPlus/http/fav.dart';
+import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/models/common/audio_normalization.dart';
 import 'package:PiliPlus/models/common/dynamic/dynamics_type.dart';
 import 'package:PiliPlus/models/common/member/tab_type.dart';
@@ -27,6 +28,7 @@ import 'package:PiliPlus/plugin/pl_player/controller.dart';
 import 'package:PiliPlus/services/download/download_service.dart';
 import 'package:PiliPlus/utils/accounts.dart';
 import 'package:PiliPlus/utils/cache_manager.dart';
+import 'package:PiliPlus/utils/extension/num_ext.dart';
 import 'package:PiliPlus/utils/feed_back.dart';
 import 'package:PiliPlus/utils/image_utils.dart';
 import 'package:PiliPlus/utils/path_utils.dart';
@@ -143,24 +145,26 @@ List<SettingsModel> get extraSettings => [
           initialValue: pgcSkipType,
           child: Padding(
             padding: const EdgeInsets.symmetric(vertical: 8),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(
-                  pgcSkipType.title,
-                  style: TextStyle(fontSize: 14, height: 1, color: color),
-                  strutStyle: const StrutStyle(
-                    leading: 0,
-                    height: 1,
-                    fontSize: 14,
+            child: Text.rich(
+              style: TextStyle(fontSize: 14, height: 1, color: color),
+              strutStyle: const StrutStyle(
+                leading: 0,
+                height: 1,
+                fontSize: 14,
+              ),
+              TextSpan(
+                children: [
+                  TextSpan(text: pgcSkipType.title),
+                  WidgetSpan(
+                    alignment: .middle,
+                    child: Icon(
+                      MdiIcons.unfoldMoreHorizontal,
+                      size: 14,
+                      color: color,
+                    ),
                   ),
-                ),
-                Icon(
-                  MdiIcons.unfoldMoreHorizontal,
-                  size: MediaQuery.textScalerOf(context).scale(14),
-                  color: color,
-                ),
-              ],
+                ],
+              ),
             ),
           ),
           onSelected: (value) async {
@@ -639,16 +643,16 @@ List<SettingsModel> get extraSettings => [
     setKey: SettingBoxKey.enableCommAntifraud,
     defaultVal: false,
   ),
-  const SwitchModel(
-    title: '使用「哔哩发评反诈」检查评论',
-    subtitle: '仅对Android生效',
-    leading: Icon(
-      FontAwesomeIcons.b,
-      size: 22,
+  if (Platform.isAndroid)
+    const SwitchModel(
+      title: '使用「哔哩发评反诈」检查评论',
+      leading: Icon(
+        FontAwesomeIcons.b,
+        size: 22,
+      ),
+      setKey: SettingBoxKey.biliSendCommAntifraud,
+      defaultVal: false,
     ),
-    setKey: SettingBoxKey.biliSendCommAntifraud,
-    defaultVal: false,
-  ),
   const SwitchModel(
     title: '发布/转发动态反诈',
     subtitle: '发布/转发动态后检查动态是否可见',
@@ -789,14 +793,16 @@ List<SettingsModel> get extraSettings => [
     onTap: (context) async {
       if (Accounts.main.isLogin) {
         final res = await FavHttp.allFavFolders(Accounts.main.mid);
-        if (res.isSuccess) {
-          final list = res.data.list;
+        if (res case Success(:final response)) {
+          final list = response.list;
           if (list == null || list.isEmpty) {
             return;
           }
           final quickFavId = Pref.quickFavId;
-          Get.dialog(
-            AlertDialog(
+          if (!context.mounted) return;
+          showDialog(
+            context: context,
+            builder: (context) => AlertDialog(
               clipBehavior: Clip.hardEdge,
               title: const Text('选择默认收藏夹'),
               contentPadding: const EdgeInsets.only(top: 5, bottom: 18),

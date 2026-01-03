@@ -10,7 +10,7 @@ import 'package:PiliPlus/pages/live_emote/view.dart';
 import 'package:PiliPlus/pages/live_room/controller.dart';
 import 'package:flutter/material.dart' hide TextField;
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
-import 'package:get/get.dart' hide MultipartFile;
+import 'package:get/get.dart';
 
 class LiveSendDmPanel extends CommonRichTextPubPage {
   final bool fromEmote;
@@ -87,7 +87,7 @@ class _ReplyPageState extends CommonRichTextPubPageState<LiveSendDmPanel> {
 
   List<Widget> buildInputView(ThemeData theme) {
     return [
-      Container(
+      Padding(
         padding: const EdgeInsets.only(
           top: 12,
           right: 15,
@@ -160,11 +160,27 @@ class _ReplyPageState extends CommonRichTextPubPageState<LiveSendDmPanel> {
     int? dmType,
     emoticonOptions,
   }) async {
+    int replyMid = 0;
+    String replyDmid = '';
+    if (message == null) {
+      final buffer = StringBuffer();
+      for (final e in editController.items) {
+        if (e.type == .at) {
+          replyMid = int.parse(e.rawText);
+          replyDmid = e.id!;
+        } else {
+          buffer.write(e.rawText);
+        }
+      }
+      message = buffer.toString();
+    }
     final res = await LiveHttp.sendLiveMsg(
       roomId: liveRoomController.roomId,
-      msg: message ?? editController.rawText,
+      msg: message,
       dmType: dmType,
       emoticonOptions: emoticonOptions,
+      replyMid: replyMid,
+      replayDmid: replyDmid,
     );
     if (res.isSuccess) {
       hasPub = true;

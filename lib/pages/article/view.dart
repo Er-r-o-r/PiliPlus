@@ -25,7 +25,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:get/get.dart' hide ContextExtensionss;
+import 'package:get/get.dart';
 import 'package:html/parser.dart' as parser;
 
 class ArticlePage extends StatefulWidget {
@@ -175,7 +175,7 @@ class _ArticlePageState extends CommonDynPageState<ArticlePage> {
             // if (kDebugMode) debugPrint('moduleBlocked');
             final moduleBlocked = controller.opusData!.modules.moduleBlocked!;
             content = SliverToBoxAdapter(
-              child: moduleBlockedItem(theme, moduleBlocked, maxWidth),
+              child: moduleBlockedItem(context, theme, moduleBlocked, maxWidth),
             );
           } else if (controller.articleData?.content != null) {
             if (controller.articleData?.type == 3) {
@@ -292,6 +292,8 @@ class _ArticlePageState extends CommonDynPageState<ArticlePage> {
                                             fadeOutDuration: const Duration(
                                               milliseconds: 120,
                                             ),
+                                            placeholder: (_, _) =>
+                                                const SizedBox.shrink(),
                                           ),
                                         ),
                                         if (pic.isLongPic == true)
@@ -502,6 +504,7 @@ class _ArticlePageState extends CommonDynPageState<ArticlePage> {
           late final primary = theme.colorScheme.primary;
           late final outline = theme.colorScheme.outline;
           late final btnStyle = TextButton.styleFrom(
+            tapTargetSize: .padded,
             padding: const EdgeInsets.symmetric(horizontal: 15),
             foregroundColor: outline,
           );
