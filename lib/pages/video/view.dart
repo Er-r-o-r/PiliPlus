@@ -212,6 +212,7 @@ class _VideoDetailPageVState extends State<VideoDetailPageV>
 
   // 播放器状态监听
   Future<void> playerListener(PlayerStatus status) async {
+    videoDetailController.update();
     bool isPlaying = status == PlayerStatus.playing;
     try {
       if (videoDetailController.scrollCtr.hasClients) {
@@ -1877,49 +1878,47 @@ class _VideoDetailPageVState extends State<VideoDetailPageV>
                         ),
                       ),
                       const Spacer(),
-                      Obx(() {
-                        final totalCount =
-                            videoDetailController.args['count'] ?? 0;
-                        if (totalCount <= 0 ||
-                            videoDetailController.mediaList.isEmpty) {
-                          return const SizedBox.shrink();
-                        }
-
-                        String positionText = '-/-';
-                        try {
-                          final currentBvid = videoDetailController.bvid;
-                          final currentItem = videoDetailController.mediaList
-                              .firstWhereOrNull(
-                                (item) => item.bvid == currentBvid,
-                              );
-
-                          if (currentItem != null) {
-                            if (currentItem.index != null &&
-                                currentItem.index! >= 0) {
-                              final baseOffset =
-                                  videoDetailController
-                                      .mediaList
-                                      .first
-                                      .offset ??
-                                  0;
-                              final estimatedPosition =
-                                  baseOffset + currentItem.index!;
-                              positionText =
-                                  '${estimatedPosition + 1}/$totalCount';
-                            }
+                      GetBuilder<VideoDetailController>(
+                        tag: heroTag,
+                        builder: (controller) {
+                          // 原有逻辑不变
+                          final totalCount = controller.args['count'] ?? 0;
+                          if (totalCount <= 0 || controller.mediaList.isEmpty) {
+                            return const SizedBox.shrink();
                           }
-                        } catch (_) {}
 
-                        return Text(
-                          ' $positionText ',
-                          style: TextStyle(
-                            color: themeData.colorScheme.onSecondaryContainer
-                                .withValues(alpha: 0.7),
-                            fontSize: 12,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        );
-                      }),
+                          String positionText = '-/-';
+                          try {
+                            final currentBvid = controller.bvid;
+                            final currentItem = controller.mediaList
+                                .firstWhereOrNull(
+                                  (item) => item.bvid == currentBvid,
+                                );
+
+                            if (currentItem != null) {
+                              if (currentItem.index != null &&
+                                  currentItem.index! >= 0) {
+                                final baseOffset =
+                                    controller.mediaList.first.offset ?? 0;
+                                final estimatedPosition =
+                                    baseOffset + currentItem.index!;
+                                positionText =
+                                    '${estimatedPosition + 1}/$totalCount';
+                              }
+                            }
+                          } catch (_) {}
+
+                          return Text(
+                            ' $positionText ',
+                            style: TextStyle(
+                              color: themeData.colorScheme.onSecondaryContainer
+                                  .withValues(alpha: 0.7),
+                              fontSize: 12,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          );
+                        },
+                      ),
                       const Icon(Icons.keyboard_arrow_up_rounded, size: 26),
                     ],
                   ),
