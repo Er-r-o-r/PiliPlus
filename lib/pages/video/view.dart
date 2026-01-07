@@ -1593,6 +1593,7 @@ class _VideoDetailPageVState extends State<VideoDetailPageV>
               return Positioned.fill(
                 child: GestureDetector(
                   onTap: handlePlay,
+                  behavior: .opaque,
                   child: Obx(
                     () => NetworkImgLayer(
                       type: .emote,
