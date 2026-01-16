@@ -338,14 +338,7 @@ class VideoPopupMenu extends StatelessWidget {
                               actions: [
                                 TextButton(
                                   onPressed: Get.back,
-                                  child: Text(
-                                    '点错了',
-                                    style: TextStyle(
-                                      color: Theme.of(
-                                        context,
-                                      ).colorScheme.outline,
-                                    ),
-                                  ),
+                                  child: const Text('点错了'),
                                 ),
                                 TextButton(
                                   onPressed: () async {
@@ -361,7 +354,14 @@ class VideoPopupMenu extends StatelessWidget {
                                       res.toast();
                                     }
                                   },
-                                  child: const Text('确认'),
+                                  child: Text(
+                                    '确认',
+                                    style: TextStyle(
+                                      color: Theme.of(
+                                        context,
+                                      ).colorScheme.outline,
+                                    ),
+                                  ),
                                 ),
                               ],
                             );

@@ -242,11 +242,8 @@ class _SettingPageState extends State<SettingPage> {
           actions: [
             TextButton(
               onPressed: Get.back,
-              child: Text(
+              child: const Text(
                 '点错了',
-                style: TextStyle(
-                  color: theme.colorScheme.outline,
-                ),
               ),
             ),
             TextButton(
@@ -272,7 +269,10 @@ class _SettingPageState extends State<SettingPage> {
                   SmartDialog.showToast(res['msg'].toString());
                 }
               },
-              child: const Text('确认'),
+              child: Text(
+                '确认',
+                style: TextStyle(color: Theme.of(context).colorScheme.outline),
+              ),
             ),
           ],
         );
