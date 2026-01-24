@@ -655,8 +655,15 @@ abstract final class Pref {
   static bool get dynamicsWaterfallFlow =>
       _setting.get(SettingBoxKey.dynamicsWaterfallFlow, defaultValue: true);
 
-  static bool get hideSearchBar =>
-      _setting.get(SettingBoxKey.hideSearchBar, defaultValue: true);
+  static bool get hideTopBar => _setting.get(
+    SettingBoxKey.hideTopBar,
+    defaultValue: PlatformUtils.isMobile,
+  );
+
+  static bool get hideBottomBar => _setting.get(
+    SettingBoxKey.hideBottomBar,
+    defaultValue: PlatformUtils.isMobile,
+  );
 
   static bool get enableScrollThreshold =>
       _setting.get(SettingBoxKey.enableScrollThreshold, defaultValue: false);
@@ -708,9 +715,6 @@ abstract final class Pref {
         SettingBoxKey.replySortType,
         defaultValue: ReplySortType.hot.index,
       )];
-
-  static bool get hideTabBar =>
-      _setting.get(SettingBoxKey.hideTabBar, defaultValue: true);
 
   static DynamicBadgeMode get dynamicBadgeMode =>
       DynamicBadgeMode.values[_setting.get(
@@ -783,7 +787,7 @@ abstract final class Pref {
       _setting.get(SettingBoxKey.expandBuffer, defaultValue: false);
 
   static bool get useOpenSLES =>
-      _setting.get(SettingBoxKey.useOpenSLES, defaultValue: true);
+      _setting.get(SettingBoxKey.useOpenSLES, defaultValue: false);
 
   static bool get enableAi =>
       _setting.get(SettingBoxKey.enableAi, defaultValue: false);
@@ -943,4 +947,7 @@ abstract final class Pref {
 
   static bool get showDynDispute =>
       _setting.get(SettingBoxKey.showDynDispute, defaultValue: false);
+
+  static double get touchSlopH =>
+      _setting.get(SettingBoxKey.touchSlopH, defaultValue: 24.0);
 }
