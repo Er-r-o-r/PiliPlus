@@ -793,14 +793,17 @@ class PlPlayerController {
       if (isAnim) {
         setShader(superResolutionType.value, pp);
       }
-      await pp.setProperty("af", "scaletempo2=max-speed=8");
+      // await pp.setProperty('audio-pitch-correction', 'yes'); // default yes
       if (Platform.isAndroid) {
         await pp.setProperty("volume-max", "100");
         await pp.setProperty("ao", Pref.audioOutput);
       }
       // video-sync=display-resample
       await pp.setProperty("video-sync", Pref.videoSync);
-      await pp.setProperty("autosync", Pref.autosync);
+      final autosync = Pref.autosync;
+      if (autosync != '0') {
+        await pp.setProperty("autosync", autosync);
+      }
       // vo=gpu-next & gpu-context=android & gpu-api=opengl
       // await pp.setProperty("vo", "gpu-next");
       // await pp.setProperty("gpu-context", "android");
