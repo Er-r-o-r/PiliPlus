@@ -43,9 +43,18 @@ class RcmdController extends CommonListController {
   }
 
   @override
-  Future<void> onRefresh() {
-    page = 0;
-    isEnd = false;
-    return queryData();
+  Future<void> onRefresh({bool ignoreSaveLastData = false}) async {
+    final original = Pref.enableSaveLastData;
+    if (ignoreSaveLastData) {
+      enableSaveLastData = false;
+      lastRefreshAt = null;
+    }
+    try {
+      page = 0;
+      isEnd = false;
+      await queryData();
+    } finally {
+      enableSaveLastData = original;
+    }
   }
 }

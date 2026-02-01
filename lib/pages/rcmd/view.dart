@@ -30,23 +30,43 @@ class _RcmdPageState extends CommonPageState<RcmdPage, RcmdController>
   Widget build(BuildContext context) {
     super.build(context);
     return onBuild(
-      Container(
-        clipBehavior: .hardEdge,
-        margin: const .symmetric(horizontal: StyleString.safeSpace),
-        decoration: const BoxDecoration(borderRadius: StyleString.mdRadius),
-        child: refreshIndicator(
-          onRefresh: controller.onRefresh,
-          child: CustomScrollView(
-            controller: controller.scrollController,
-            physics: const AlwaysScrollableScrollPhysics(),
-            slivers: [
-              SliverPadding(
-                padding: const .only(top: StyleString.cardSpace, bottom: 100),
-                sliver: Obx(() => _buildBody(controller.loadingState.value)),
+      Stack(
+        children: [
+          Container(
+            clipBehavior: Clip.hardEdge,
+            margin: const EdgeInsets.symmetric(
+              horizontal: StyleString.safeSpace,
+            ),
+            decoration: const BoxDecoration(borderRadius: StyleString.mdRadius),
+            child: refreshIndicator(
+              onRefresh: controller.onRefresh,
+              child: CustomScrollView(
+                controller: controller.scrollController,
+                physics: const AlwaysScrollableScrollPhysics(),
+                slivers: [
+                  SliverPadding(
+                    padding: const EdgeInsets.only(
+                      top: StyleString.cardSpace,
+                      bottom: 100,
+                    ),
+                    sliver: Obx(
+                      () => _buildBody(controller.loadingState.value),
+                    ),
+                  ),
+                ],
               ),
-            ],
+            ),
           ),
-        ),
+          Positioned(
+            bottom: MediaQuery.of(context).padding.bottom + 16,
+            right: 16,
+            child: FloatingActionButton(
+              onPressed: () => controller.onRefresh(ignoreSaveLastData: true),
+              tooltip: '刷新（丢弃历史推荐）',
+              child: const Icon(Icons.refresh, size: 24),
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -79,10 +99,10 @@ class _RcmdPageState extends CommonPageState<RcmdPage, RcmdController>
                         child: Card(
                           child: Container(
                             alignment: Alignment.center,
-                            padding: const .symmetric(horizontal: 10),
+                            padding: const EdgeInsets.symmetric(horizontal: 10),
                             child: Text(
                               '上次看到这里\n点击刷新',
-                              textAlign: .center,
+                              textAlign: TextAlign.center,
                               style: TextStyle(
                                 color: Theme.of(
                                   context,
