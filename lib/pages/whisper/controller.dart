@@ -74,7 +74,14 @@ class WhisperController extends CommonWhisperController<SessionMainReply> {
   List<Session>? getDataList(SessionMainReply response) {
     offset = response.paginationParams.offsets;
     isEnd = !response.paginationParams.hasMore;
-    return response.sessions;
+    return response.sessions
+        .where((session) => !_isSystemNotification(session))
+        .toList();
+  }
+
+  bool _isSystemNotification(Session session) {
+    return session.sessionInfo?.avatar?.mid == 0 &&
+        session.sessionInfo?.sessionName == '系统通知';
   }
 
   @override
