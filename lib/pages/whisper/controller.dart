@@ -80,8 +80,8 @@ class WhisperController extends CommonWhisperController<SessionMainReply> {
   }
 
   bool _isSystemNotification(Session session) {
-    return session.sessionInfo?.avatar?.mid == 0 &&
-        session.sessionInfo?.sessionName == '系统通知';
+    return session.sessionInfo.avatar.mid == 0 &&
+        session.sessionInfo.sessionName == '系统通知';
   }
 
   @override
