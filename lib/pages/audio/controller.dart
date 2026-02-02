@@ -408,7 +408,9 @@ class AudioController extends GetxController
       return;
     }
 
+    SmartDialog.showLoading(msg: '获取中...');
     await Request.setCoin();
+    SmartDialog.dismiss();
     if (GlobalData().coins != null && GlobalData().coins! < 1) {
       SmartDialog.showToast('硬币不足');
       // return;

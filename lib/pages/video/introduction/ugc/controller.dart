@@ -181,7 +181,9 @@ class UgcIntroController extends CommonIntroController with ReloadMixin {
       SmartDialog.showToast('账号未登录');
       return;
     }
+    SmartDialog.showLoading(msg: '获取中...');
     await Request.setCoin();
+    SmartDialog.dismiss();
     if (hasLike.value && hasCoin && hasFav.value) {
       // 已点赞、投币、收藏
       SmartDialog.showToast('已三连');
@@ -278,7 +280,9 @@ class UgcIntroController extends CommonIntroController with ReloadMixin {
       return;
     }
 
+    SmartDialog.showLoading(msg: '获取中...');
     await Request.setCoin();
+    SmartDialog.dismiss();
     if (GlobalData().coins != null && GlobalData().coins! < 1) {
       SmartDialog.showToast('硬币不足');
       // return;
