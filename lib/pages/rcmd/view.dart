@@ -9,6 +9,7 @@ import 'package:PiliPlus/pages/rcmd/controller.dart';
 import 'package:PiliPlus/utils/grid.dart';
 import 'package:PiliPlus/utils/storage_pref.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/src/rendering/viewport_offset.dart';
 import 'package:get/get.dart';
 
 class RcmdPage extends StatefulWidget {
@@ -30,43 +31,57 @@ class _RcmdPageState extends CommonPageState<RcmdPage, RcmdController>
   Widget build(BuildContext context) {
     super.build(context);
     return onBuild(
-      Stack(
-        children: [
-          Container(
-            clipBehavior: Clip.hardEdge,
-            margin: const EdgeInsets.symmetric(
-              horizontal: StyleString.safeSpace,
-            ),
-            decoration: const BoxDecoration(borderRadius: StyleString.mdRadius),
-            child: refreshIndicator(
-              onRefresh: controller.onRefresh,
-              child: CustomScrollView(
-                controller: controller.scrollController,
-                physics: const AlwaysScrollableScrollPhysics(),
-                slivers: [
-                  SliverPadding(
-                    padding: const EdgeInsets.only(
-                      top: StyleString.cardSpace,
-                      bottom: 100,
+      NotificationListener<UserScrollNotification>(
+        onNotification: (notification) {
+          final direction = notification.direction;
+          if (direction == ScrollDirection.forward) {
+            controller.showFab();
+          } else if (direction == ScrollDirection.reverse) {
+            controller.hideFab();
+          }
+          return false;
+        },
+        child: Stack(
+          children: [
+            Container(
+              clipBehavior: Clip.hardEdge,
+              margin: const EdgeInsets.symmetric(
+                horizontal: StyleString.safeSpace,
+              ),
+              decoration: const BoxDecoration(borderRadius: StyleString.mdRadius),
+              child: refreshIndicator(
+                onRefresh: controller.onRefresh,
+                child: CustomScrollView(
+                  controller: controller.scrollController,
+                  physics: const AlwaysScrollableScrollPhysics(),
+                  slivers: [
+                    SliverPadding(
+                      padding: const EdgeInsets.only(
+                        top: StyleString.cardSpace,
+                        bottom: 100,
+                      ),
+                      sliver: Obx(
+                            () => _buildBody(controller.loadingState.value),
+                      ),
                     ),
-                    sliver: Obx(
-                      () => _buildBody(controller.loadingState.value),
-                    ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
-          ),
-          Positioned(
-            bottom: MediaQuery.of(context).padding.bottom + 16,
-            right: 16,
-            child: FloatingActionButton(
-              onPressed: () => controller.onRefresh(ignoreSaveLastData: true),
-              tooltip: '刷新（丢弃历史推荐）',
-              child: const Icon(Icons.refresh, size: 24),
+            Positioned(
+              bottom: MediaQuery.of(context).padding.bottom + 16,
+              right: 16,
+              child: SlideTransition(
+                position: controller.animation,
+                child: FloatingActionButton(
+                  onPressed: () => controller.onRefresh(ignoreSaveLastData: true),
+                  tooltip: '刷新（丢弃历史推荐）',
+                  child: const Icon(Icons.refresh, size: 24),
+                ),
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -83,66 +98,66 @@ class _RcmdPageState extends CommonPageState<RcmdPage, RcmdController>
     return switch (loadingState) {
       Loading() => _buildSkeleton,
       Success(:final response) =>
-        response != null && response.isNotEmpty
-            ? SliverGrid.builder(
-                gridDelegate: gridDelegate,
-                itemBuilder: (context, index) {
-                  if (index == response.length - 1) {
-                    controller.onLoadMore();
-                  }
-                  if (controller.lastRefreshAt != null) {
-                    if (controller.lastRefreshAt == index) {
-                      return GestureDetector(
-                        onTap: () => controller
-                          ..animateToTop()
-                          ..onRefresh(),
-                        child: Card(
-                          child: Container(
-                            alignment: Alignment.center,
-                            padding: const EdgeInsets.symmetric(horizontal: 10),
-                            child: Text(
-                              '上次看到这里\n点击刷新',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                color: Theme.of(
-                                  context,
-                                ).colorScheme.onSurfaceVariant,
-                              ),
-                            ),
-                          ),
-                        ),
-                      );
-                    }
-                    final actualIndex = index > controller.lastRefreshAt!
-                        ? index - 1
-                        : index;
-                    return VideoCardV(
-                      videoItem: response[actualIndex],
-                      onRemove: () {
-                        if (controller.lastRefreshAt != null &&
-                            actualIndex < controller.lastRefreshAt!) {
-                          controller.lastRefreshAt =
-                              controller.lastRefreshAt! - 1;
-                        }
-                        controller.loadingState
-                          ..value.data!.removeAt(actualIndex)
-                          ..refresh();
-                      },
-                    );
-                  } else {
-                    return VideoCardV(
-                      videoItem: response[index],
-                      onRemove: () => controller.loadingState
-                        ..value.data!.removeAt(index)
-                        ..refresh(),
-                    );
-                  }
-                },
-                itemCount: controller.lastRefreshAt != null
-                    ? response.length + 1
-                    : response.length,
-              )
-            : HttpError(onReload: controller.onReload),
+      response != null && response.isNotEmpty
+          ? SliverGrid.builder(
+        gridDelegate: gridDelegate,
+        itemBuilder: (context, index) {
+          if (index == response.length - 1) {
+            controller.onLoadMore();
+          }
+          if (controller.lastRefreshAt != null) {
+            if (controller.lastRefreshAt == index) {
+              return GestureDetector(
+                onTap: () => controller
+                  ..animateToTop()
+                  ..onRefresh(),
+                child: Card(
+                  child: Container(
+                    alignment: Alignment.center,
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                    child: Text(
+                      '上次看到这里\n点击刷新',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: Theme.of(
+                          context,
+                        ).colorScheme.onSurfaceVariant,
+                      ),
+                    ),
+                  ),
+                ),
+              );
+            }
+            final actualIndex = index > controller.lastRefreshAt!
+                ? index - 1
+                : index;
+            return VideoCardV(
+              videoItem: response[actualIndex],
+              onRemove: () {
+                if (controller.lastRefreshAt != null &&
+                    actualIndex < controller.lastRefreshAt!) {
+                  controller.lastRefreshAt =
+                      controller.lastRefreshAt! - 1;
+                }
+                controller.loadingState
+                  ..value.data!.removeAt(actualIndex)
+                  ..refresh();
+              },
+            );
+          } else {
+            return VideoCardV(
+              videoItem: response[index],
+              onRemove: () => controller.loadingState
+                ..value.data!.removeAt(index)
+                ..refresh(),
+            );
+          }
+        },
+        itemCount: controller.lastRefreshAt != null
+            ? response.length + 1
+            : response.length,
+      )
+          : HttpError(onReload: controller.onReload),
       Error(:final errMsg) => HttpError(
         errMsg: errMsg,
         onReload: controller.onReload,
