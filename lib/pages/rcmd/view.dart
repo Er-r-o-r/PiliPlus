@@ -48,7 +48,9 @@ class _RcmdPageState extends CommonPageState<RcmdPage, RcmdController>
               margin: const EdgeInsets.symmetric(
                 horizontal: StyleString.safeSpace,
               ),
-              decoration: const BoxDecoration(borderRadius: StyleString.mdRadius),
+              decoration: const BoxDecoration(
+                borderRadius: StyleString.mdRadius,
+              ),
               child: refreshIndicator(
                 onRefresh: controller.onRefresh,
                 child: CustomScrollView(
@@ -61,7 +63,7 @@ class _RcmdPageState extends CommonPageState<RcmdPage, RcmdController>
                         bottom: 100,
                       ),
                       sliver: Obx(
-                            () => _buildBody(controller.loadingState.value),
+                        () => _buildBody(controller.loadingState.value),
                       ),
                     ),
                   ],
@@ -74,7 +76,8 @@ class _RcmdPageState extends CommonPageState<RcmdPage, RcmdController>
               child: SlideTransition(
                 position: controller.animation,
                 child: FloatingActionButton(
-                  onPressed: () => controller.onRefresh(ignoreSaveLastData: true),
+                  onPressed: () =>
+                      controller.onRefresh(ignoreSaveLastData: true),
                   tooltip: '刷新（丢弃历史推荐）',
                   child: const Icon(Icons.refresh, size: 24),
                 ),
@@ -98,66 +101,66 @@ class _RcmdPageState extends CommonPageState<RcmdPage, RcmdController>
     return switch (loadingState) {
       Loading() => _buildSkeleton,
       Success(:final response) =>
-      response != null && response.isNotEmpty
-          ? SliverGrid.builder(
-        gridDelegate: gridDelegate,
-        itemBuilder: (context, index) {
-          if (index == response.length - 1) {
-            controller.onLoadMore();
-          }
-          if (controller.lastRefreshAt != null) {
-            if (controller.lastRefreshAt == index) {
-              return GestureDetector(
-                onTap: () => controller
-                  ..animateToTop()
-                  ..onRefresh(),
-                child: Card(
-                  child: Container(
-                    alignment: Alignment.center,
-                    padding: const EdgeInsets.symmetric(horizontal: 10),
-                    child: Text(
-                      '上次看到这里\n点击刷新',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        color: Theme.of(
-                          context,
-                        ).colorScheme.onSurfaceVariant,
-                      ),
-                    ),
-                  ),
-                ),
-              );
-            }
-            final actualIndex = index > controller.lastRefreshAt!
-                ? index - 1
-                : index;
-            return VideoCardV(
-              videoItem: response[actualIndex],
-              onRemove: () {
-                if (controller.lastRefreshAt != null &&
-                    actualIndex < controller.lastRefreshAt!) {
-                  controller.lastRefreshAt =
-                      controller.lastRefreshAt! - 1;
-                }
-                controller.loadingState
-                  ..value.data!.removeAt(actualIndex)
-                  ..refresh();
-              },
-            );
-          } else {
-            return VideoCardV(
-              videoItem: response[index],
-              onRemove: () => controller.loadingState
-                ..value.data!.removeAt(index)
-                ..refresh(),
-            );
-          }
-        },
-        itemCount: controller.lastRefreshAt != null
-            ? response.length + 1
-            : response.length,
-      )
-          : HttpError(onReload: controller.onReload),
+        response != null && response.isNotEmpty
+            ? SliverGrid.builder(
+                gridDelegate: gridDelegate,
+                itemBuilder: (context, index) {
+                  if (index == response.length - 1) {
+                    controller.onLoadMore();
+                  }
+                  if (controller.lastRefreshAt != null) {
+                    if (controller.lastRefreshAt == index) {
+                      return GestureDetector(
+                        onTap: () => controller
+                          ..animateToTop()
+                          ..onRefresh(),
+                        child: Card(
+                          child: Container(
+                            alignment: Alignment.center,
+                            padding: const EdgeInsets.symmetric(horizontal: 10),
+                            child: Text(
+                              '上次看到这里\n点击刷新',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                color: Theme.of(
+                                  context,
+                                ).colorScheme.onSurfaceVariant,
+                              ),
+                            ),
+                          ),
+                        ),
+                      );
+                    }
+                    final actualIndex = index > controller.lastRefreshAt!
+                        ? index - 1
+                        : index;
+                    return VideoCardV(
+                      videoItem: response[actualIndex],
+                      onRemove: () {
+                        if (controller.lastRefreshAt != null &&
+                            actualIndex < controller.lastRefreshAt!) {
+                          controller.lastRefreshAt =
+                              controller.lastRefreshAt! - 1;
+                        }
+                        controller.loadingState
+                          ..value.data!.removeAt(actualIndex)
+                          ..refresh();
+                      },
+                    );
+                  } else {
+                    return VideoCardV(
+                      videoItem: response[index],
+                      onRemove: () => controller.loadingState
+                        ..value.data!.removeAt(index)
+                        ..refresh(),
+                    );
+                  }
+                },
+                itemCount: controller.lastRefreshAt != null
+                    ? response.length + 1
+                    : response.length,
+              )
+            : HttpError(onReload: controller.onReload),
       Error(:final errMsg) => HttpError(
         errMsg: errMsg,
         onReload: controller.onReload,

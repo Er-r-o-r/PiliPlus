@@ -5,7 +5,8 @@ import 'package:PiliPlus/utils/storage_pref.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class RcmdController extends CommonListController with GetSingleTickerProviderStateMixin {
+class RcmdController extends CommonListController
+    with GetSingleTickerProviderStateMixin {
   late bool enableSaveLastData = Pref.enableSaveLastData;
   final bool appRcmd = Pref.appRcmd;
 
