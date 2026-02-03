@@ -6,6 +6,7 @@ import 'package:PiliPlus/common/widgets/video_card/video_card_v.dart';
 import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/pages/common/common_page.dart';
 import 'package:PiliPlus/pages/rcmd/controller.dart';
+import 'package:PiliPlus/utils/feed_back.dart';
 import 'package:PiliPlus/utils/grid.dart';
 import 'package:PiliPlus/utils/storage_pref.dart';
 import 'package:flutter/material.dart';
@@ -76,8 +77,10 @@ class _RcmdPageState extends CommonPageState<RcmdPage, RcmdController>
               child: SlideTransition(
                 position: controller.animation,
                 child: FloatingActionButton(
-                  onPressed: () =>
-                      controller.onRefresh(ignoreSaveLastData: true),
+                  onPressed: () {
+                    feedBack();
+                    controller.onRefresh(ignoreSaveLastData: true);
+                  },
                   tooltip: '刷新（丢弃历史推荐）',
                   child: const Icon(Icons.refresh, size: 24),
                 ),
