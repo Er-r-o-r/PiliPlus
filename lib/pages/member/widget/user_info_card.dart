@@ -2,6 +2,8 @@ import 'package:PiliPlus/common/constants.dart';
 import 'package:PiliPlus/common/widgets/avatars.dart';
 import 'package:PiliPlus/common/widgets/pendant_avatar.dart';
 import 'package:PiliPlus/common/widgets/view_safe_area.dart';
+import 'package:PiliPlus/http/loading_state.dart';
+import 'package:PiliPlus/http/user.dart';
 import 'package:PiliPlus/models/common/image_preview_type.dart';
 import 'package:PiliPlus/models/common/member/user_info_type.dart';
 import 'package:PiliPlus/models_new/space/space/card.dart';
@@ -25,6 +27,7 @@ import 'package:PiliPlus/utils/utils.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 class UserInfoCard extends StatelessWidget {
   const UserInfoCard({
@@ -306,6 +309,30 @@ class UserInfoCard extends StatelessWidget {
               return child;
             },
           ),
+          if (relation != 0 && relation != 128)
+            FutureBuilder<String>(
+              future: () async {
+                final res = await UserHttp.hasFollow(int.parse(card.mid!));
+                if (res case Success(:final response)) {
+                  final mtime = response['mtime'];
+                  if (mtime is int && mtime > 0) {
+                    return DateFormat(
+                      'yyyy-MM-dd HH:mm:ss',
+                    ).format(DateTime.fromMillisecondsSinceEpoch(mtime * 1000));
+                  }
+                }
+                return '无法获取';
+              }(),
+              builder: (context, snapshot) {
+                return Text(
+                  '关注时间: ${snapshot.data}',
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: colorScheme.outline,
+                  ),
+                );
+              },
+            ),
         ],
       ),
     ),
