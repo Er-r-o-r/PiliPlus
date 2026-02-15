@@ -171,13 +171,13 @@ class _DanmakuBlockPageState extends State<DanmakuBlockPage> {
         actions: [
           TextButton(
             onPressed: Get.back,
-            child: Text(
-              '取消',
-              style: TextStyle(color: Theme.of(context).colorScheme.outline),
-            ),
+            child: const Text('取消'),
           ),
           TextButton(
-            child: const Text('确定'),
+            child: Text(
+              '确定',
+              style: TextStyle(color: Theme.of(context).colorScheme.outline),
+            ),
             onPressed: () async {
               if (filter != initFilter) {
                 Get.back();

@@ -184,13 +184,13 @@ SettingsModel getBanWordModel({
           actions: [
             TextButton(
               onPressed: Get.back,
-              child: Text(
-                '取消',
-                style: TextStyle(color: ColorScheme.of(context).outline),
-              ),
+              child: const Text('取消'),
             ),
             TextButton(
-              child: const Text('保存'),
+              child: Text(
+                '保存',
+                style: TextStyle(color: ColorScheme.of(context).outline),
+              ),
               onPressed: () {
                 Get.back();
                 banWord = editValue;
@@ -260,10 +260,7 @@ SettingsModel getVideoFilterSelectModel({
               actions: [
                 TextButton(
                   onPressed: Get.back,
-                  child: Text(
-                    '取消',
-                    style: TextStyle(color: ColorScheme.of(context).outline),
-                  ),
+                  child: const Text('取消'),
                 ),
                 TextButton(
                   onPressed: () {
@@ -274,7 +271,10 @@ SettingsModel getVideoFilterSelectModel({
                       SmartDialog.showToast(e.toString());
                     }
                   },
-                  child: const Text('确定'),
+                  child: Text(
+                    '确定',
+                    style: TextStyle(color: ColorScheme.of(context).outline),
+                  ),
                 ),
               ],
             ),

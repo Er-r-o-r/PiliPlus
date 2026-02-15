@@ -263,19 +263,19 @@ class _WebviewPageState extends State<WebviewPage> {
                         actions: [
                           TextButton(
                             onPressed: Get.back,
-                            child: Text(
-                              '取消',
-                              style: TextStyle(
-                                color: Theme.of(context).colorScheme.outline,
-                              ),
-                            ),
+                            child: const Text('取消'),
                           ),
                           TextButton(
                             onPressed: () {
                               Get.back();
                               PageUtils.launchURL(request.url.toString());
                             },
-                            child: Text('确定 ($fileSize)'),
+                            child: Text(
+                              '确定 ($fileSize)',
+                              style: TextStyle(
+                                color: Theme.of(context).colorScheme.outline,
+                              ),
+                            ),
                           ),
                         ],
                       );

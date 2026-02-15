@@ -576,19 +576,19 @@ class AuthorPanel extends StatelessWidget {
                           actions: [
                             TextButton(
                               onPressed: Get.back,
-                              child: Text(
-                                '取消',
-                                style: TextStyle(
-                                  color: theme.colorScheme.outline,
-                                ),
-                              ),
+                              child: const Text('取消'),
                             ),
                             TextButton(
                               onPressed: () {
                                 Get.back();
                                 onRemove!(item.idStr);
                               },
-                              child: const Text('确定'),
+                              child: Text(
+                                '确定',
+                                style: TextStyle(
+                                  color: theme.colorScheme.outline,
+                                ),
+                              ),
                             ),
                           ],
                         ),

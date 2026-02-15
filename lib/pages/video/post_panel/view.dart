@@ -120,16 +120,16 @@ class PostPanel extends CommonSlidePage {
                     actions: [
                       TextButton(
                         onPressed: Get.back,
+                        child: const Text('取消'),
+                      ),
+                      TextButton(
+                        onPressed: () => Get.back(result: initV),
                         child: Text(
-                          '取消',
+                          '确定',
                           style: TextStyle(
                             color: theme.colorScheme.outline,
                           ),
                         ),
-                      ),
-                      TextButton(
-                        onPressed: () => Get.back(result: initV),
-                        child: const Text('确定'),
                       ),
                     ],
                   ),
@@ -283,14 +283,14 @@ class _PostPanelState extends State<PostPanel>
                 actions: [
                   TextButton(
                     onPressed: Get.back,
-                    child: Text(
-                      '取消',
-                      style: TextStyle(color: theme.colorScheme.outline),
-                    ),
+                    child: const Text('取消'),
                   ),
                   TextButton(
                     onPressed: _onPost,
-                    child: const Text('确定提交'),
+                    child: Text(
+                      '确定提交',
+                      style: TextStyle(color: theme.colorScheme.outline),
+                    ),
                   ),
                 ],
               ),

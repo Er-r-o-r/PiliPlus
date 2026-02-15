@@ -200,14 +200,14 @@ Future<void> _showLiveCDNDialog(
       actions: [
         TextButton(
           onPressed: Get.back,
-          child: Text(
-            '取消',
-            style: TextStyle(color: ColorScheme.of(context).outline),
-          ),
+          child: const Text('取消'),
         ),
         TextButton(
           onPressed: () => Get.back(result: host),
-          child: const Text('确定'),
+          child: Text(
+            '确定',
+            style: TextStyle(color: ColorScheme.of(context).outline),
+          ),
         ),
       ],
     ),
@@ -471,10 +471,7 @@ void _showAutoSyncDialog(BuildContext context, VoidCallback setState) {
       actions: [
         TextButton(
           onPressed: Get.back,
-          child: Text(
-            '取消',
-            style: TextStyle(color: ColorScheme.of(context).outline),
-          ),
+          child: const Text('取消'),
         ),
         TextButton(
           onPressed: () async {
@@ -488,7 +485,10 @@ void _showAutoSyncDialog(BuildContext context, VoidCallback setState) {
               SmartDialog.showToast(e.toString());
             }
           },
-          child: const Text('确定'),
+          child: Text(
+            '确定',
+            style: TextStyle(color: ColorScheme.of(context).outline),
+          ),
         ),
       ],
     ),

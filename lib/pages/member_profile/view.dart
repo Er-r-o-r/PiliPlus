@@ -322,10 +322,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
           actions: [
             TextButton(
               onPressed: Get.back,
-              child: Text(
-                '取消',
-                style: TextStyle(color: theme.colorScheme.outline),
-              ),
+              child: const Text('取消'),
             ),
             TextButton(
               onPressed: () {
@@ -335,7 +332,10 @@ class _EditProfilePageState extends State<EditProfilePage> {
                   _update(type: type);
                 }
               },
-              child: const Text('确定'),
+              child: Text(
+                '确定',
+                style: TextStyle(color: theme.colorScheme.outline),
+              ),
             ),
           ],
         );

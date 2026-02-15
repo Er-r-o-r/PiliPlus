@@ -223,17 +223,17 @@ class FavVideoCardH extends StatelessWidget {
                     actions: [
                       TextButton(
                         onPressed: Get.back,
-                        child: Text(
-                          '取消',
-                          style: TextStyle(color: theme.colorScheme.outline),
-                        ),
+                        child: const Text('取消'),
                       ),
                       TextButton(
                         onPressed: () {
                           Get.back();
                           ctr!.onCancelFav(index!, item.id!, item.type!);
                         },
-                        child: const Text('确定取消'),
+                        child: Text(
+                          '确定取消',
+                          style: TextStyle(color: theme.colorScheme.outline),
+                        ),
                       ),
                     ],
                   ),

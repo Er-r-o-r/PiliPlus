@@ -768,7 +768,6 @@ class HeaderControlState extends State<HeaderControl>
       context: context,
       builder: (context) {
         final state = player.state;
-        final colorScheme = ColorScheme.of(context);
         return AlertDialog(
           title: const Text('播放信息'),
           contentPadding: const EdgeInsets.only(top: 16),
@@ -889,10 +888,7 @@ class HeaderControlState extends State<HeaderControl>
           actions: [
             TextButton(
               onPressed: Get.back,
-              child: Text(
-                '确定',
-                style: TextStyle(color: colorScheme.outline),
-              ),
+              child: const Text('确定'),
             ),
           ],
         );

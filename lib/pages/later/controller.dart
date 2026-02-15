@@ -59,10 +59,7 @@ mixin BaseLaterController
         actions: [
           TextButton(
             onPressed: Get.back,
-            child: Text(
-              '取消',
-              style: TextStyle(color: Theme.of(context).colorScheme.outline),
-            ),
+            child: const Text('取消'),
           ),
           TextButton(
             onPressed: () async {
@@ -75,7 +72,10 @@ mixin BaseLaterController
                 updateCount?.call(1);
               }
             },
-            child: const Text('确认移除'),
+            child: Text(
+              '确认移除',
+              style: TextStyle(color: Theme.of(context).colorScheme.outline),
+            ),
           ),
         ],
       ),

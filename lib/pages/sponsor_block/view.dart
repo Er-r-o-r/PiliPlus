@@ -95,10 +95,7 @@ class _SponsorBlockPageState extends State<SponsorBlockPage> {
               actions: [
                 TextButton(
                   onPressed: Get.back,
-                  child: Text(
-                    '取消',
-                    style: TextStyle(color: theme.colorScheme.outline),
-                  ),
+                  child: const Text('取消'),
                 ),
                 TextButton(
                   onPressed: () {
@@ -111,7 +108,10 @@ class _SponsorBlockPageState extends State<SponsorBlockPage> {
                       SmartDialog.showToast(e.toString());
                     }
                   },
-                  child: const Text('确定'),
+                  child: Text(
+                    '确定',
+                    style: TextStyle(color: theme.colorScheme.outline),
+                  ),
                 ),
               ],
             ),
@@ -186,12 +186,7 @@ class _SponsorBlockPageState extends State<SponsorBlockPage> {
                   ),
                   TextButton(
                     onPressed: Get.back,
-                    child: Text(
-                      '取消',
-                      style: TextStyle(
-                        color: theme.colorScheme.outline,
-                      ),
-                    ),
+                    child: const Text('取消'),
                   ),
                   TextButton(
                     onPressed: () {
@@ -202,7 +197,12 @@ class _SponsorBlockPageState extends State<SponsorBlockPage> {
                         (context as Element).markNeedsBuild();
                       }
                     },
-                    child: const Text('确定'),
+                    child: Text(
+                      '确定',
+                      style: TextStyle(
+                        color: theme.colorScheme.outline,
+                      ),
+                    ),
                   ),
                 ],
               );
@@ -338,12 +338,7 @@ class _SponsorBlockPageState extends State<SponsorBlockPage> {
                 ),
                 TextButton(
                   onPressed: Get.back,
-                  child: Text(
-                    '取消',
-                    style: TextStyle(
-                      color: theme.colorScheme.outline,
-                    ),
-                  ),
+                  child: const Text('取消'),
                 ),
                 TextButton(
                   onPressed: () {
@@ -355,7 +350,12 @@ class _SponsorBlockPageState extends State<SponsorBlockPage> {
                     _getUserInfo();
                     (context as Element).markNeedsBuild();
                   },
-                  child: const Text('确定'),
+                  child: Text(
+                    '确定',
+                    style: TextStyle(
+                      color: theme.colorScheme.outline,
+                    ),
+                  ),
                 ),
               ],
             ),

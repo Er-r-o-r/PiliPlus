@@ -96,10 +96,7 @@ Future<void> autoWrapReportDialog(
       actions: [
         TextButton(
           onPressed: Get.back,
-          child: Text(
-            '取消',
-            style: TextStyle(color: ColorScheme.of(context).outline),
-          ),
+          child: const Text('取消'),
         ),
         TextButton(
           onPressed: () async {
@@ -123,7 +120,10 @@ Future<void> autoWrapReportDialog(
               Utils.reportError(e, s);
             }
           },
-          child: const Text('确定'),
+          child: Text(
+            '确定',
+            style: TextStyle(color: ColorScheme.of(context).outline),
+          ),
         ),
       ],
     ),

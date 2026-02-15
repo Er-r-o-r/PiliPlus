@@ -63,14 +63,14 @@ class _SlideDialogState extends State<SlideDialog> {
       actions: [
         TextButton(
           onPressed: Navigator.of(context).pop,
-          child: Text(
-            '取消',
-            style: TextStyle(color: Theme.of(context).colorScheme.outline),
-          ),
+          child: const Text('取消'),
         ),
         TextButton(
           onPressed: () => Navigator.pop(context, _tempValue),
-          child: const Text('确定'),
+          child: Text(
+            '确定',
+            style: TextStyle(color: Theme.of(context).colorScheme.outline),
+          ),
         ),
       ],
     );

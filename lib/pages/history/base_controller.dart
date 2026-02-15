@@ -24,10 +24,7 @@ class HistoryBaseController extends GetxController {
         actions: [
           TextButton(
             onPressed: Get.back,
-            child: Text(
-              '取消',
-              style: TextStyle(color: Theme.of(context).colorScheme.outline),
-            ),
+            child: const Text('取消'),
           ),
           TextButton(
             onPressed: () async {
@@ -42,7 +39,10 @@ class HistoryBaseController extends GetxController {
                 res.toast();
               }
             },
-            child: const Text('确认清空'),
+            child: Text(
+              '确认清空',
+              style: TextStyle(color: Theme.of(context).colorScheme.outline),
+            ),
           ),
         ],
       ),

@@ -415,12 +415,7 @@ Future<void> showImportExportDialog<T>(
                   actions: [
                     TextButton(
                       onPressed: Get.back,
-                      child: Text(
-                        '取消',
-                        style: TextStyle(
-                          color: Theme.of(context).colorScheme.outline,
-                        ),
-                      ),
+                      child: const Text('取消'),
                     ),
                     TextButton(
                       onPressed: () async {
@@ -433,7 +428,12 @@ Future<void> showImportExportDialog<T>(
                           SmartDialog.showToast('导入失败：$e');
                         }
                       },
-                      child: const Text('确定'),
+                      child: Text(
+                        '确定',
+                        style: TextStyle(
+                          color: Theme.of(context).colorScheme.outline,
+                        ),
+                      ),
                     ),
                   ],
                 );
@@ -478,12 +478,7 @@ Future<void> showImportExportDialog<T>(
                 actions: [
                   TextButton(
                     onPressed: Get.back,
-                    child: Text(
-                      '取消',
-                      style: TextStyle(
-                        color: Theme.of(context).colorScheme.outline,
-                      ),
-                    ),
+                    child: const Text('取消'),
                   ),
                   TextButton(
                     onPressed: () async {
@@ -501,7 +496,12 @@ Future<void> showImportExportDialog<T>(
                         forceErrorText = null;
                       }
                     },
-                    child: const Text('确定'),
+                    child: Text(
+                      '确定',
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.outline,
+                      ),
+                    ),
                   ),
                 ],
               ),

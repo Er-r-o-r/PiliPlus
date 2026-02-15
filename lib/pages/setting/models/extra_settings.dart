@@ -700,10 +700,7 @@ Future<void> audioNormalization(
           actions: [
             TextButton(
               onPressed: Get.back,
-              child: Text(
-                '取消',
-                style: TextStyle(color: ColorScheme.of(context).outline),
-              ),
+              child: const Text('取消'),
             ),
             TextButton(
               onPressed: () {
@@ -715,7 +712,10 @@ Future<void> audioNormalization(
                 }
                 setState();
               },
-              child: const Text('确定'),
+              child: Text(
+                '确定',
+                style: TextStyle(color: ColorScheme.of(context).outline),
+              ),
             ),
           ],
         ),
@@ -796,10 +796,7 @@ void _showDynDialog(BuildContext context) {
       actions: [
         TextButton(
           onPressed: Get.back,
-          child: Text(
-            '取消',
-            style: TextStyle(color: ColorScheme.of(context).outline),
-          ),
+          child: const Text('取消'),
         ),
         TextButton(
           onPressed: () {
@@ -812,7 +809,10 @@ void _showDynDialog(BuildContext context) {
               SmartDialog.showToast(e.toString());
             }
           },
-          child: const Text('确定'),
+          child: Text(
+            '确定',
+            style: TextStyle(color: ColorScheme.of(context).outline),
+          ),
         ),
       ],
     ),
@@ -836,10 +836,7 @@ void _showReplyLengthDialog(BuildContext context, VoidCallback setState) {
       actions: [
         TextButton(
           onPressed: Get.back,
-          child: Text(
-            '取消',
-            style: TextStyle(color: ColorScheme.of(context).outline),
-          ),
+          child: const Text('取消'),
         ),
         TextButton(
           onPressed: () async {
@@ -853,7 +850,10 @@ void _showReplyLengthDialog(BuildContext context, VoidCallback setState) {
               SmartDialog.showToast(e.toString());
             }
           },
-          child: const Text('确定'),
+          child: Text(
+            '确定',
+            style: TextStyle(color: ColorScheme.of(context).outline),
+          ),
         ),
       ],
     ),
@@ -878,10 +878,7 @@ void _showDmHeightDialog(BuildContext context, VoidCallback setState) {
       actions: [
         TextButton(
           onPressed: Get.back,
-          child: Text(
-            '取消',
-            style: TextStyle(color: ColorScheme.of(context).outline),
-          ),
+          child: const Text('取消'),
         ),
         TextButton(
           onPressed: () async {
@@ -897,7 +894,10 @@ void _showDmHeightDialog(BuildContext context, VoidCallback setState) {
               SmartDialog.showToast(e.toString());
             }
           },
-          child: const Text('确定'),
+          child: Text(
+            '确定',
+            style: TextStyle(color: ColorScheme.of(context).outline),
+          ),
         ),
       ],
     ),
@@ -922,10 +922,7 @@ void _showTouchSlopDialog(BuildContext context, VoidCallback setState) {
       actions: [
         TextButton(
           onPressed: Get.back,
-          child: Text(
-            '取消',
-            style: TextStyle(color: ColorScheme.of(context).outline),
-          ),
+          child: const Text('取消'),
         ),
         TextButton(
           onPressed: () async {
@@ -939,7 +936,10 @@ void _showTouchSlopDialog(BuildContext context, VoidCallback setState) {
               SmartDialog.showToast(e.toString());
             }
           },
-          child: const Text('确定'),
+          child: Text(
+            '确定',
+            style: TextStyle(color: ColorScheme.of(context).outline),
+          ),
         ),
       ],
     ),
@@ -1201,10 +1201,7 @@ void _showProxyDialog(BuildContext context) {
       actions: [
         TextButton(
           onPressed: Get.back,
-          child: Text(
-            '取消',
-            style: TextStyle(color: ColorScheme.of(context).outline),
-          ),
+          child: const Text('取消'),
         ),
         TextButton(
           onPressed: () {
@@ -1218,7 +1215,10 @@ void _showProxyDialog(BuildContext context) {
               systemProxyPort,
             );
           },
-          child: const Text('确认'),
+          child: Text(
+            '确认',
+            style: TextStyle(color: ColorScheme.of(context).outline),
+          ),
         ),
       ],
     ),
@@ -1243,10 +1243,7 @@ void _showCacheDialog(BuildContext context, VoidCallback setState) {
       actions: [
         TextButton(
           onPressed: Get.back,
-          child: Text(
-            '取消',
-            style: TextStyle(color: ColorScheme.of(context).outline),
-          ),
+          child: const Text('取消'),
         ),
         TextButton(
           onPressed: () async {
@@ -1262,7 +1259,10 @@ void _showCacheDialog(BuildContext context, VoidCallback setState) {
               SmartDialog.showToast(e.toString());
             }
           },
-          child: const Text('确定'),
+          child: Text(
+            '确定',
+            style: TextStyle(color: ColorScheme.of(context).outline),
+          ),
         ),
       ],
     ),

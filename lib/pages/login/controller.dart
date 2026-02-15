@@ -831,10 +831,7 @@ class LoginPageController extends GetxController
         actions: [
           TextButton(
             onPressed: Get.back,
-            child: Text(
-              '取消',
-              style: TextStyle(color: ColorScheme.of(context).outline),
-            ),
+            child: const Text('取消'),
           ),
           TextButton(
             onPressed: () {
@@ -849,7 +846,10 @@ class LoginPageController extends GetxController
                 }
               }
             },
-            child: const Text('确定'),
+            child: Text(
+              '确定',
+              style: TextStyle(color: ColorScheme.of(context).outline),
+            ),
           ),
         ],
       ),

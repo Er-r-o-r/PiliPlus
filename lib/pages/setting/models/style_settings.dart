@@ -468,10 +468,7 @@ void _showUiScaleDialog(
         ),
         TextButton(
           onPressed: () => Navigator.pop(context),
-          child: Text(
-            '取消',
-            style: TextStyle(color: ColorScheme.of(context).outline),
-          ),
+          child: const Text('取消'),
         ),
         TextButton(
           onPressed: () {
@@ -484,7 +481,10 @@ void _showUiScaleDialog(
               },
             );
           },
-          child: const Text('确定'),
+          child: Text(
+            '确定',
+            style: TextStyle(color: ColorScheme.of(context).outline),
+          ),
         ),
       ],
     ),
@@ -593,10 +593,7 @@ void _showSpringDialog(BuildContext context, _) {
         ),
         TextButton(
           onPressed: Get.back,
-          child: Text(
-            '取消',
-            style: TextStyle(color: ColorScheme.of(context).outline),
-          ),
+          child: const Text('取消'),
         ),
         TextButton(
           onPressed: () {
@@ -612,7 +609,10 @@ void _showSpringDialog(BuildContext context, _) {
               SmartDialog.showToast(e.toString());
             }
           },
-          child: const Text('确定'),
+          child: Text(
+            '确定',
+            style: TextStyle(color: ColorScheme.of(context).outline),
+          ),
         ),
       ],
     ),
@@ -800,10 +800,7 @@ void _showScrollDialog(BuildContext context) {
       actions: [
         TextButton(
           onPressed: Get.back,
-          child: Text(
-            '取消',
-            style: TextStyle(color: ColorScheme.of(context).outline),
-          ),
+          child: const Text('取消'),
         ),
         TextButton(
           onPressed: () {
@@ -816,7 +813,10 @@ void _showScrollDialog(BuildContext context) {
               SmartDialog.showToast(e.toString());
             }
           },
-          child: const Text('确定'),
+          child: Text(
+            '确定',
+            style: TextStyle(color: ColorScheme.of(context).outline),
+          ),
         ),
       ],
     ),

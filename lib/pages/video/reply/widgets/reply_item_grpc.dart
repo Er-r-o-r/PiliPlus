@@ -912,16 +912,16 @@ class ReplyItemGrpc extends StatelessWidget {
                       actions: <Widget>[
                         TextButton(
                           onPressed: () => Get.back(result: false),
+                          child: const Text('取消'),
+                        ),
+                        TextButton(
+                          onPressed: () => Get.back(result: true),
                           child: Text(
-                            '取消',
+                            '确定',
                             style: TextStyle(
                               color: theme.colorScheme.outline,
                             ),
                           ),
-                        ),
-                        TextButton(
-                          onPressed: () => Get.back(result: true),
-                          child: const Text('确定'),
                         ),
                       ],
                     );

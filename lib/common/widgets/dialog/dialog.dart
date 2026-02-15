@@ -21,19 +21,19 @@ Future<bool> showConfirmDialog({
           actions: [
             TextButton(
               onPressed: Get.back,
-              child: Text(
-                '取消',
-                style: TextStyle(
-                  color: Theme.of(context).colorScheme.outline,
-                ),
-              ),
+              child: const Text('取消'),
             ),
             TextButton(
               onPressed: () {
                 Get.back(result: true);
                 onConfirm?.call();
               },
-              child: const Text('确认'),
+              child: Text(
+                '确认',
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.outline,
+                ),
+              ),
             ),
           ],
         ),
