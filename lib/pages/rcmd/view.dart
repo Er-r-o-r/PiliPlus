@@ -6,6 +6,7 @@ import 'package:PiliPlus/common/widgets/loading_widget/http_error.dart';
 import 'package:PiliPlus/common/widgets/video_card/video_card_v.dart';
 import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/pages/rcmd/controller.dart';
+import 'package:PiliPlus/utils/feed_back.dart' show feedBack;
 import 'package:PiliPlus/utils/grid.dart';
 import 'package:PiliPlus/utils/storage_pref.dart';
 import 'package:get/get.dart';
@@ -80,12 +81,18 @@ class _RcmdPageState extends State<RcmdPage>
                         onTap: () => controller
                           ..animateToTop()
                           ..onRefresh(),
+                        onLongPress: () {
+                          controller
+                            ..animateToTop()
+                            ..onRefreshAndDiscardSavedData();
+                          feedBack();
+                        },
                         child: Card(
                           child: Container(
                             alignment: Alignment.center,
                             padding: const .symmetric(horizontal: 10),
                             child: Text(
-                              '上次看到这里\n点击刷新',
+                              '上次看到这里\n点击刷新，长按丢弃旧内容',
                               textAlign: .center,
                               style: TextStyle(
                                 color: colorScheme.onSurfaceVariant,
